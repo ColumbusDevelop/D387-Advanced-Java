@@ -33,9 +33,18 @@ export class AppComponent implements OnInit{
   request!:ReserveRoomRequest;
   currentCheckInVal!:string;
   currentCheckOutVal!:string;
+  //
+  // B3
+  //
+  timeZones: string = '';
 
     ngOnInit(){
 
+      //
+      // B3
+      // Time zone conversion for each object
+
+      this.timeZoneCurl();
 
       //
       // B1
@@ -62,6 +71,22 @@ export class AppComponent implements OnInit{
     });
   }
 
+    //
+    // B3
+    // HTTP get request to URL
+    // Assigns string response from get request to timeZones object instance
+    // Error logging
+
+    timeZoneCurl() {
+      this.httpClient.get('http://localhost:8080/times/presentationTimes', {responseType: 'text'}).subscribe(
+        (res: string) => {
+          this.timeZones = res;
+        },
+        (error: any) => {
+          console.error(error);
+        }
+      );
+    }
 
     onSubmit({value,valid}:{value:Roomsearch,valid:boolean}){
       this.getAll().subscribe(
