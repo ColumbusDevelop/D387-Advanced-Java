@@ -15,6 +15,12 @@ import {map} from "rxjs/operators";
 })
 export class AppComponent implements OnInit{
 
+  //
+  // B1
+  //
+  welcomeMessageEnglish$!: Observable<string>
+  welcomeMessageFrench$!: Observable<string>
+
   constructor(private httpClient:HttpClient){}
 
   private baseURL:string='http://localhost:8080';
@@ -29,6 +35,16 @@ export class AppComponent implements OnInit{
   currentCheckOutVal!:string;
 
     ngOnInit(){
+
+
+      //
+      // B1
+      // Grabs french welcome message
+      // Grabs english welcome message
+
+      this.welcomeMessageFrench$ = this.httpClient.get(this.baseURL + '/welcome?lang=fr-CA', {responseType: 'text'} )
+      this.welcomeMessageEnglish$ = this.httpClient.get(this.baseURL + '/welcome?lang=en-US', {responseType: 'text'} )
+
       this.roomsearch= new FormGroup({
         checkin: new FormControl(' '),
         checkout: new FormControl(' ')
@@ -45,6 +61,7 @@ export class AppComponent implements OnInit{
       this.currentCheckOutVal = x.checkout;
     });
   }
+
 
     onSubmit({value,valid}:{value:Roomsearch,valid:boolean}){
       this.getAll().subscribe(
